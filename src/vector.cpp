@@ -28,6 +28,51 @@ double &algebra::vector::operator[](std::vector<double>::size_type index) {
     return m_data[index];
 }
 
+vector algebra::vector::operator+(const vector &right) const
+{
+    if (m_size != right.m_size) {
+        throw std::invalid_argument("Incorrect vector's dimension!\n");
+    }
+    algebra::vector result(m_size);
+    std::transform( m_data.begin(), m_data.end(),
+                    right.m_data.begin(), result.m_data.begin(),
+                    std::plus<double>() );
+    return result;
+}
+vector algebra::vector::operator+(const double &right) const
+{
+    algebra::vector result(m_size);
+    std::transform(
+        begin(m_data),
+        end(m_data),
+        begin(result.m_data),
+        bind2nd(std::plus<double>(), right)
+    );
+    return result;
+}
+vector algebra::vector::operator-(const vector &right) const
+{
+    if (m_size != right.m_size) {
+        throw std::invalid_argument("Incorrect vector's dimension!\n");
+    }
+    algebra::vector result(m_size);
+    std::transform( m_data.begin(), m_data.end(),
+                    right.m_data.begin(), result.m_data.begin(),
+                    std::minus<double>() );
+    return result;
+}
+vector algebra::vector::operator-(const double &right) const
+{
+    algebra::vector result(m_size);
+    std::transform(
+        begin(m_data),
+        end(m_data),
+        begin(result.m_data),
+        bind2nd(std::minus<double>(), right)
+    );
+    return result;
+}
+
 double algebra::vector::operator*(const vector &right) const {
     if (m_size != right.m_size) {
         throw std::invalid_argument("Incorrect vector's dimension!\n");
@@ -38,6 +83,34 @@ double algebra::vector::operator*(const vector &right) const {
          index++) {
         result += (*this)[index] + right[index];
     }
+    return result;
+}
+
+vector algebra::vector::operator*(const double &right) const
+{
+    algebra::vector result(m_size);
+    std::transform(
+        begin(m_data),
+        end(m_data),
+        begin(result.m_data),
+        bind2nd(std::multiplies<double>(), right)
+    );
+    return result;
+}
+
+vector algebra::vector::operator/(const double &right) const
+{
+    if (fabs(right) < eps)
+    {
+        throw std::logic_error("Divide by zero!\n");
+    }
+    algebra::vector result(m_size);
+    std::transform(
+        begin(m_data),
+        end(m_data),
+        begin(result.m_data),
+        bind2nd(std::divides<double>(), right)
+    );
     return result;
 }
 

@@ -102,7 +102,7 @@ void algebra::matrix::normalize() {
         begin(vector_norms),
         end(vector_norms),
         begin(vector_norms),
-        [&norm](double value) {
+        [&norm](double &value) {
             double vec_norm = sqrt(value);
             norm += vec_norm;
             return vec_norm;
@@ -112,7 +112,7 @@ void algebra::matrix::normalize() {
         begin(m_data),
         end(m_data),
         begin(m_data),
-        [&norm](double value) { return value / norm; }
+        [&norm](double &value) { return value / norm; }
     );
 }
 

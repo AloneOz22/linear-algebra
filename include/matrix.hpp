@@ -6,6 +6,8 @@
 namespace algebra {
 class matrix {
 private:
+    static constexpr double eps = 1e-9;
+
     std::vector<double>::size_type m_rows;
     std::vector<double>::size_type m_cols;
 
